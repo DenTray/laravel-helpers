@@ -4,7 +4,7 @@ namespace RonasIT\Support\Tests;
 
 class HelpersTest extends HelpersTestCase
 {
-    public function getData(): array
+    public function getGetListData(): array
     {
         return [
             [
@@ -46,7 +46,7 @@ class HelpersTest extends HelpersTestCase
     }
 
     /**
-     * @dataProvider getData
+     * @dataProvider getGetListData
      *
      * @param string $input
      * @param string $key
@@ -65,24 +65,15 @@ class HelpersTest extends HelpersTestCase
     {
         return [
             [
-                'input' => [1, 2, 3],
+                'input' => 'areas.houses.json',
                 'expected' => false
             ],
             [
-                'input' => [
-                    'a' => 'b',
-                    'c' => 'd',
-                    'f' => [1, 2, 3]
-                ],
+                'input' => 'areas.json',
                 'expected' => false
             ],
             [
-                'input' => [
-                    [
-                        'a' => 1,
-                        'b' => 2
-                    ]
-                ],
+                'input' => 'city.neighborhoods.json',
                 'expected' => true
             ]
         ];
@@ -91,12 +82,52 @@ class HelpersTest extends HelpersTestCase
     /**
      * @dataProvider getIsMultidimensionalData
      *
-     * @param array $input
+     * @param string $input
      * @param bool $expected
      */
-    public function testIsMultidimensional(array $input, bool $expected)
+    public function testIsMultidimensional(string $input, bool $expected)
     {
+        $input = $this->getJsonFixture($input);
+
         $result = is_multidimensional($input);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function getEqualsData(): array
+    {
+        return [
+            [
+                'first_array' => 'array_equals/settings.json',
+                'second_array' => 'array_equals/settings_diff.json',
+                'expected' => false
+            ],
+            [
+                'first_array' => 'array_equals/settings_rather_types.json',
+                'second_array' => 'array_equals/settings_rather_types_diff_order.json',
+                'expected' => true
+            ],
+            [
+                'first_array' => 'array_equals/settings.json',
+                'second_array' => 'array_equals/settings_diff_order.json',
+                'expected' => true
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider getEqualsData
+     *
+     * @param string $firstArray
+     * @param string $secondArray
+     * @param bool $expected
+     */
+    public function testEquals(string $firstArray, string $secondArray, bool $expected)
+    {
+        $firstArray = $this->getJsonFixture($firstArray);
+        $secondArray = $this->getJsonFixture($secondArray);
+
+        $result = array_equals($firstArray, $secondArray);
 
         $this->assertEquals($expected, $result);
     }
