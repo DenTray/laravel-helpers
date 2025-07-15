@@ -33,9 +33,7 @@ trait ModelTrait
         $tableName = $this->getTable();
         $fields = Schema::getColumnListing($tableName);
 
-        return array_map(function ($field) use ($tableName) {
-            return "{$tableName}.{$field}";
-        }, $fields);
+        return array_map(fn ($field) => "{$tableName}.{$field}", $fields);
     }
 
     protected function getRelationshipFromMethod($method)
