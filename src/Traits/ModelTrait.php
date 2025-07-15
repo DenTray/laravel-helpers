@@ -129,9 +129,7 @@ trait ModelTrait
         if (Str::contains($relations, '.')) {
             return explode('.', $relations);
         } else {
-            return [
-                $relations
-            ];
+            return [$relations];
         }
     }
 
